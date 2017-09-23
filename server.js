@@ -6,7 +6,7 @@
 *
 * Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-09-18
 *
-* Online (Heroku) Link: https://powerful-fortress-54500.herokuapp.com
+* Online (Heroku) Link:  https://immense-hamlet-93628.herokuapp.com/
 ********************************************************************************/ 
 
 var express = require("express");
@@ -26,6 +26,6 @@ app.get("/about", function(req,res){
     res.sendFile(path.join(__dirname + "/views/about.html"));
 });
 
+app.listen(HTTP_PORT, onHttpStart);
 app.use(express.static('public'));
 
-app.listen(HTTP_PORT, onHttpStart);
