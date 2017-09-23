@@ -12,7 +12,7 @@
 var express = require("express");
 var app = express();
 var path = require("path");
-var HTTP_PORT = process.env.port || 5000;
+var HTTP_PORT = process.env.port || 8080;
 
 function onHttpStart(){
     console.log("Express http server listening on " + HTTP_PORT);
