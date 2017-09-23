@@ -6,13 +6,13 @@
 *
 * Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-09-18
 *
-* Online (Heroku) Link: https://powerful-fortress-90383.herokuapp.com
+* Online (Heroku) Link: https://powerful-fortress-54500.herokuapp.com
 ********************************************************************************/ 
 
 var express = require("express");
 var app = express();
 var path = require("path");
-var HTTP_PORT = process.env.port || 8080;
+var HTTP_PORT = process.env.port || 3000;
 
 function onHttpStart(){
     console.log("Express http server listening on " + HTTP_PORT);
