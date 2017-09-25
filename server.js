@@ -28,4 +28,3 @@ app.get("/about", function(req,res){
 
 app.listen(HTTP_PORT, onHttpStart);
 app.use(express.static('public'));
-
