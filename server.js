@@ -15,9 +15,13 @@ var app = express();
 var path = require("path");
 var HTTP_PORT = process.env.port || 8080;
 
+console.log(1);
+
 function onHttpStart(){
     console.log("Express http server listening on " + HTTP_PORT);
 }
+
+console.log(2);
 
 app.get("/", function(req,res){
     res.sendFile(path.join(__dirname + "/views/home.html"));
@@ -26,6 +30,8 @@ app.get("/", function(req,res){
 app.get("/about", function(req,res){
     res.sendFile(path.join(__dirname + "/views/about.html"));
 });
+
+console.log(3);
 
 app.get("/employees", (req, res) => {
     if (req.query.status == "Full Time" || req.query.status == "Part Time") {
@@ -61,6 +67,8 @@ app.get("/employees", (req, res) => {
         }
     });
 
+    console.log(4);
+
     app.get("/employee/:empNum", (req, res) => {
         var num = req.params.empNum;
         dataService.getEmployeeByNum(num).then((data) => {
@@ -70,6 +78,8 @@ app.get("/employees", (req, res) => {
         });
     });
     
+    console.log(5);
+
     app.get("/managers", (req, res) => {
         dataService.getManagers().then((data) => {
             res.json(data);
@@ -78,6 +88,8 @@ app.get("/employees", (req, res) => {
         });
     });
 
+    console.log(6);
+
     app.get("/departments", (req, res) => {
         dataService.getDepartments().then((data) => {
             res.json(data);
@@ -85,6 +97,8 @@ app.get("/employees", (req, res) => {
             res.json({ message: "no results returned" });
         });
     });
+
+    console.log(7);
 
     app.use((req, res) => {
         res.status(404).send("Page Not Found");
