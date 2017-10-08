@@ -96,4 +96,4 @@ app.get("/employees", (req, res) => {
         app.listen(HTTP_PORT, onHttpStart);
     }).catch((err) => {
         console.log("Error: " + err);
-    });
+    }); 
