@@ -34,17 +34,17 @@ module.exports.getAllEmployees = () => {
     });
 };
 
-module.exports.getEmployeesByStatus = (sts) => {
-    return new Promise((resolve,reject) => {
+module.exports.getEmployeesByStatus = (stat) => {
+    return new Promise((resolve, reject) => {
         if(employees.length > 0){
             var i;
-            var tmp = [];
+            var temp = [];
             for (i = 0; i < employees.length; i++){
-                if(employees[i].status == sts){
-                    tmp.push(employees[i]);
+                if(employees[i].status == stat){
+                    temp.push(employees[i]);
                 }
             }
-            if(tmp.length>0){resolve(tmp)};
+            if(temp.length > 0){resolve(temp)};
         }else{
             reject("no results returned");
         }
@@ -55,13 +55,13 @@ module.exports.getEmployeesByDepartment = (department) => {
     return new Promise((resolve,reject)=>{
         if(employees.length > 0){
             var i ;
-            var tmp = [];
-            for (i=0;i<employees.length;i++){
+            var temp = [];
+            for (i = 0; i < employees.length; i++){
                 if( employees[i].department == department){
-                tmp.push(employees[i]);
+                temp.push(employees[i]);
                 }
             }
-            if(tmp.length> 0) {resolve(tmp);}
+            if(temp.length > 0) {resolve(temp);}
         }else{
             reject("no results returned");
         }
@@ -72,13 +72,13 @@ module.exports.getEmployeesByManager = (manager) => {
     return new Promise((resolve,reject)=>{
         if(employees.length > 0){
            var i;
-           var tmp = [];
-           for(i=0;i<employees.length;i++){
+           var temp = [];
+           for(i = 0; i < employees.length; i++){
                if(employees[i].employeeManagerNum == manager){
-                   tmp.push(employees[i]);
+                   temp.push(employees[i]);
                 }
             }
-            if(tmp.length> 0) {resolve(tmp);}
+            if(temp.length > 0) {resolve(temp);}
         }else{
             reject("no results returned");
         }
@@ -86,7 +86,7 @@ module.exports.getEmployeesByManager = (manager) => {
 };
 
 module.exports.getEmployeeByNum = (num) => {
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve,reject) => {
         if(employees.length > 0){
             resolve(employees[num - 1]);
         }else{
@@ -96,16 +96,16 @@ module.exports.getEmployeeByNum = (num) => {
 };
 
 module.exports.getManagers = () => {
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve,reject) => {
         if(employees.length > 0){
             var i;
-            var tmp = [];
-            for(i=0;i<employees.length;i++){
+            var temp = [];
+            for(i = 0; i < employees.length; i++){
                 if(employees[i].isManager == true){
-                    tmp.push(employees[i]);
+                    temp.push(employees[i]);
                 }
             }
-            if(tmp.length> 0) {resolve(tmp);}
+            if(temp.length> 0) {resolve(temp);}
         }else{
             reject("no results returned");
         }
