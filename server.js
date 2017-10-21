@@ -4,12 +4,14 @@
 * assignment has been copied manually or electronically from any other source (including web sites) or
 * distributed to other students.
 *
-* Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-10-08
+* Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-10-21
 *
 * Online (Heroku) Link:  https://immense-hamlet-93628.herokuapp.com/
 *
 ********************************************************************************/ 
 var dataService = require("./data-service.js");
+const exphbs = require('express-handlebars');      
+const bodyParser = require('body-parser');
 var express = require("express");
 var app = express();
 var path = require("path");
@@ -17,16 +19,33 @@ var HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 
+app.engine(".hbs", exphbs({   
+    extname: ".hbs",   
+    defaultLayout: 'layout',   
+    helpers: {     
+        equal: function (lvalue, rvalue, options) {       
+        if (arguments.length < 3)         
+        throw new Error("Handlebars Helper equal needs 2 parameters");       
+        if (lvalue != rvalue) {         
+            return options.inverse(this);       
+        } else {         
+            return options.fn(this);       
+        }     
+    }  
+} 
+})); 
+app.set("view engine", ".hbs"); 
+
 function onHttpStart(){
     console.log("Express http server listening on " + HTTP_PORT);
 }
 
 app.get("/", function(req,res){
-    res.sendFile(path.join(__dirname + "/views/home.html"));
+    res.render("home");
 });
 
 app.get("/about", function(req,res){
-    res.sendFile(path.join(__dirname + "/views/about.html"));
+    res.render("about");
 });
 
 app.get("/employees", (req, res) => {
