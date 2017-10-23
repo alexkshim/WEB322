@@ -10,12 +10,12 @@
 *  Online (Heroku) Link: https://immense-hamlet-93628.herokuapp.com/
 * 
 ********************************************************************************/
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 var dataService = require("./data-service.js");
 var express = require("express");
 var app = express();
 var path = require("path");
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
 
 var HTTP_PORT = process.env.PORT || 8080;
 
