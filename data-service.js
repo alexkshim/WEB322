@@ -8,7 +8,7 @@ module.exports.initialize = function () {
     return new Promise((resolve, reject) => {
         fs.readFile('./data/employees.json', (err, data) => {
             if (err) {
-                reject("unable to read file");
+                reject("unable to read file" + err);
             } else {
                 employees = JSON.parse(data);
                 fs.readFile('./data/departments.json', (err, data) => {
@@ -140,22 +140,13 @@ module.exports.addEmployee = (employeeData) => {
 };
 
 module.exports.updateEmployee = (employeeData) => {
+    employeeData.isManager = (employeeData.isManager) ? true : false;
     return new Promise((resolve, reject) => {
         if (employees.length > 0) {
             var i;
             for (i = 0; i < employees.length; i++) {
                 if (employees[i].employeeNum == employeeData.employeeNum) {
-                    employees[i].firstName = employeeData.firstName;
-                    employees[i].last_name = employeeData.last_name;
-                    employees[i].email = employeeData.email;
-                    employees[i].addressStreet = employeeData.addressStreet;
-                    employees[i].addresCity = employeeData.addresCity;
-                    employees[i].addressState = employeeData.addressState;
-                    employees[i].addressPostal = employeeData.addressPostal;
-                    employees[i].isManager = employeeData.isManager;
-                    employees[i].employeeManagerNum = employeeData.employeeManagerNum;
-                    employees[i].status = employeeData.status;
-                    employees[i].department = employeeData.department;
+                    employees[i] = employeeData;
                 }
             }
             resolve();

@@ -11,11 +11,12 @@
 * 
 ********************************************************************************/
 var dataService = require("./data-service.js");
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
 var express = require("express");
 var app = express();
 var path = require("path");
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
+
 var HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
@@ -95,7 +96,7 @@ app.get("/employee/:empNum", (req, res) => {
 
 app.get("/managers", (req, res) => {
     dataService.getManagers().then((data) => {
-        res.render("employeeList", { data: data, title: "Employees (Managers)" });
+        res.render("employeeList", { data: data, title: "Employee (Managers)" });
     }).catch(() => {
         res.render("employeeList", { data: {}, title: "Employees (Managers)" });
     });
