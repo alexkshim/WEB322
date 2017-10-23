@@ -2,6 +2,7 @@ const fs = require('fs');
 
 var employees = [];
 var department = [];
+var empCount = 0;
 
 module.exports.initialize = function () {
     return new Promise((resolve, reject) => {
@@ -14,7 +15,8 @@ module.exports.initialize = function () {
                     if (err) {
                         reject("unable to read file");
                     } else {
-                        department = JSON.parse(data); 
+                        department = JSON.parse(data);
+                        empCount = employees.length;
                         resolve(employees);
                         resolve(department);
                     }
@@ -117,6 +119,47 @@ module.exports.getDepartments = () => {
         if(department.length > 0){
             resolve(department);
         }else{
+            reject("no results returned");
+        }
+    });
+};
+
+module.exports.addEmployee = (employeeData) => {
+    return new Promise((resolve, reject) => {
+        if (employees.length > 0) {
+            empCount = employees.length;
+            empCount++;
+            employeeData["employeeNum"] = empCount;
+            console.log(employeeData["employeeNum"]);
+            employees.push(employeeData);
+            resolve();
+        } else {
+            reject("no results returned");
+        }
+    });
+};
+
+module.exports.updateEmployee = (employeeData) => {
+    return new Promise((resolve, reject) => {
+        if (employees.length > 0) {
+            var i;
+            for (i = 0; i < employees.length; i++) {
+                if (employees[i].employeeNum == employeeData.employeeNum) {
+                    employees[i].firstName = employeeData.firstName;
+                    employees[i].last_name = employeeData.last_name;
+                    employees[i].email = employeeData.email;
+                    employees[i].addressStreet = employeeData.addressStreet;
+                    employees[i].addresCity = employeeData.addresCity;
+                    employees[i].addressState = employeeData.addressState;
+                    employees[i].addressPostal = employeeData.addressPostal;
+                    employees[i].isManager = employeeData.isManager;
+                    employees[i].employeeManagerNum = employeeData.employeeManagerNum;
+                    employees[i].status = employeeData.status;
+                    employees[i].department = employeeData.department;
+                }
+            }
+            resolve();
+        } else {
             reject("no results returned");
         }
     });
