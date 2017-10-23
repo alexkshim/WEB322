@@ -2,8 +2,29 @@
     <div class="col-md-12">
         <h1>{{title}}
             <h1>
-                <hr /> </div>
+                <hr />
+    </div>
 </div>
 <div class="row">
-    <div class="col-md-12"> {{#each data}} {{departmentId}} {{departmentName}}<br /> {{/each}} </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>Department Number</th>
+                        <th>Department Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each data}}
+                    <tr>
+                        <td><a href="/employees?department={{departmentId}}">{{departmentId}}</a></td>
+                        <td><a href="/employees?department={{departmentId}}">{{departmentName}}</a></td>
+                        <td>{{else}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
