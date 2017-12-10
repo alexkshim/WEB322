@@ -1,11 +1,11 @@
 /*********************************************************************************
 *
-*  WEB322 – Assignment 04 
+*  WEB322 – Assignment 05 
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part of this 
 *  assignment has been copied manually or electronically from any other source (including web sites) or  
 *  distributed to other students. 
 *  
-* Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-10-21
+* Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-12-10
 * 
 *  Online (Heroku) Link: https://immense-hamlet-93628.herokuapp.com/
 * 
@@ -121,6 +121,30 @@ app.post("/employees/add", (req, res) => {
 app.post("/employee/update", (req, res) => {
     dataService.updateEmployee(req.body).then((data) => {
         res.redirect("/employees");
+    });
+});
+
+app.get("/departments/add", (req,res) => {
+    res.render("addDepartment");
+});
+
+app.post("/departments/add", (req, res) => {
+    dataService.addDepartment(req.body).then(() => {
+        res.redirect("/departments");
+    });
+});
+
+app.post("/department/update", (req, res) => {
+    dataService.updateDepartment(req.body).then(() => {
+        res.redirect("/departments");
+    });
+});
+
+app.get("/department/:departmentId", (req, res) => {
+    dataService.getDepartmentById(req.params.departmentId).then((data) => {
+        res.render("department", { data: data });
+    }).catch((err) => {
+        res.status(404).send("Department Not Found");
     });
 });
 
