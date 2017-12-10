@@ -10,12 +10,12 @@
 *  Online (Heroku) Link: https://immense-hamlet-93628.herokuapp.com/
 * 
 ********************************************************************************/
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
-var dataService = require("./data-service.js");
 var express = require("express");
 var app = express();
 var path = require("path");
+var dataService = require("./data-service.js");
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 
 var HTTP_PORT = process.env.PORT || 8080;
 
@@ -52,34 +52,28 @@ app.get("/about", function (req, res) {
 });
 
 app.get("/employees", (req, res) => {
-    if (req.query.status == "Full Time" || req.query.status == "Part Time") {
-        var stat = req.query.status;
-        dataService.getEmployeesByStatus(stat).then((data) => {
+    if (req.query.status) {
+        dataService.getEmployeesByStatus(req.query.status).then((data) => {
             res.render("employeeList", { data: data, title: "Employees" });
-        }).catch(() => {
+        }).catch((err) => {
             res.render("employeeList", { data: {}, title: "Employees" });
         });
-    }
-    else if (req.query.manager) {
-        var mng = req.query.manager;
-        dataService.getEmployeesByManager(mng).then((data) => {
-            res.render("employeeList", { data: data, title: "Employees" });
-        }).catch(() => {
+    } else if (req.query.department) {
+        dataService.getEmployeesByDepartment(req.query.department).then((data) => {
+            res.render("employeeList", { data: data, title: "Employees"});
+        }).catch((err) => {
             res.render("employeeList", { data: {}, title: "Employees" });
         });
-    }
-    else if (req.query.department) {
-        var depart = req.query.department;
-        dataService.getEmployeesByDepartment(depart).then((data) => {
+    } else if (req.query.manager) {
+        dataService.getEmployeesByManager(req.query.manager).then((data) => {
             res.render("employeeList", { data: data, title: "Employees" });
-        }).catch(() => {
-            res.render("employeeList", { data: data, title: "Employees" });
+        }).catch((err) => {
+            res.render("employeeList", { data: {}, title: "Employees" });
         });
-    }
-    else {
+    } else {
         dataService.getAllEmployees().then((data) => {
             res.render("employeeList", { data: data, title: "Employees" });
-        }).catch(() => {
+        }).catch((err) => {
             res.render("employeeList", { data: {}, title: "Employees" });
         });
     }
@@ -88,12 +82,12 @@ app.get("/employees", (req, res) => {
 app.get("/employee/:empNum", (req, res) => {
     let viewData = {};
 
-    dataser.getEmployeeByNum(req.params.empNum)
+    dataService.getEmployeeByNum(req.params.empNum)
     .then((data) => {
         viewData.data = data;
     }).catch(() => {
         viewData.data = null;
-    }).then(dataser.getDepartments)
+    }).then(dataService.getDepartments)
     .then((data) => {
         viewData.departments = data;
         for (let i = 0; i < viewData.departments.length; i++) {
@@ -113,7 +107,7 @@ app.get("/employee/:empNum", (req, res) => {
 });
 
 app.get("/employee/delete/:empNum", (req,res) => {
-    dataser.deleteEmployeeByNum(req.params.empNum).then(() => {
+    dataService.deleteEmployeeByNum(req.params.empNum).then(() => {
         res.redirect("/employees");
     }).catch((err) => {
         res.status(500).send("Unable to Remove Employee / Employee Not Found");
@@ -149,11 +143,7 @@ app.post("/employees/add", (req, res) => {
         res.redirect("/employees");
     });
 });
-app.post("/employee/update", (req, res) => {
-    dataService.updateEmployee(req.body).then((data) => {
-        res.redirect("/employees");
-    });
-});
+
 
 app.get("/departments/add", (req,res) => {
     res.render("addDepartment");
@@ -162,6 +152,12 @@ app.get("/departments/add", (req,res) => {
 app.post("/departments/add", (req, res) => {
     dataService.addDepartment(req.body).then(() => {
         res.redirect("/departments");
+    });
+});
+
+app.post("/employee/update", (req, res) => {
+    dataService.updateEmployee(req.body).then((data) => {
+        res.redirect("/employees");
     });
 });
 
@@ -183,8 +179,8 @@ app.use((req, res) => {
     res.status(404).send("Page Not Found");
 });
 
-dataService.initialize().then(() => {
+dataService.initialize().then(function () {
     app.listen(HTTP_PORT, onHttpStart);
-}).catch((err) => {
-    console.log("Error: " + err);
-}); 
+}).catch(function () {
+    console.log("unable to sync the database");
+});
