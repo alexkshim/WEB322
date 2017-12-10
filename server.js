@@ -86,11 +86,37 @@ app.get("/employees", (req, res) => {
 });
 
 app.get("/employee/:empNum", (req, res) => {
-    var num = req.params.empNum;
-    dataService.getEmployeeByNum(num).then((data) => {
-        res.render("employee", { data: data, title: "Employees" });
+    let viewData = {};
+
+    dataser.getEmployeeByNum(req.params.empNum)
+    .then((data) => {
+        viewData.data = data;
     }).catch(() => {
-        res.status(404).send("Employee Not Found");
+        viewData.data = null;
+    }).then(dataser.getDepartments)
+    .then((data) => {
+        viewData.departments = data;
+        for (let i = 0; i < viewData.departments.length; i++) {
+            if (viewData.departments[i].departmentId == viewData.data.department) {
+                viewData.departments[i].selected = true;
+            }
+        }
+    }).catch(() => {
+        viewData.departments = [];
+    }).then(() => {
+        if (viewData.data == null) {
+            res.status(404).send("Employee Not Found");
+        } else {
+            res.render("employee", { viewData: viewData });
+        }
+    });
+});
+
+app.get("/employee/delete/:empNum", (req,res) => {
+    dataser.deleteEmployeeByNum(req.params.empNum).then(() => {
+        res.redirect("/employees");
+    }).catch((err) => {
+        res.status(500).send("Unable to Remove Employee / Employee Not Found");
     });
 });
 
@@ -111,8 +137,13 @@ app.get("/departments", (req, res) => {
 });
 
 app.get("/employees/add", (req, res) => {
-    res.render("addEmployee");
+    dataService.getDepartments().then((data) => {
+        res.render("addEmployee", {departments: data});
+    }).catch((err) => {
+       res.render("addEmployee", {departments: [] });
+    });
 });
+
 app.post("/employees/add", (req, res) => {
     dataService.addEmployee(req.body).then((data) => {
         res.redirect("/employees");
