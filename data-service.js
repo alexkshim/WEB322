@@ -9,12 +9,11 @@ var sequelize = new Sequelize('d3j5o0vsjimbog', 'iutytmqfwozvyh', 'bbb401775dfa1
     } 
 }); 
 
-// Defining Employee Model
 var Employee = sequelize.define('Employee', {
     employeeNum: {
         type: Sequelize.INTEGER,
         primaryKey: true, 
-        autoIncrement: true
+        autoIncrement: true 
     },
     firstName: Sequelize.STRING,
     last_name: Sequelize.STRING,
@@ -32,21 +31,22 @@ var Employee = sequelize.define('Employee', {
     hireDate: Sequelize.STRING
 });
 
-// Defining Department Model
+
 var Department = sequelize.define('Department', {
     departmentId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        primaryKey: true, 
+        autoIncrement: true 
     },
     departmentName: Sequelize.STRING
 });
+
 
 module.exports.initialize = function () {
     return new Promise(function (resolve, reject) {
         sequelize.sync().then( () => {
             resolve();
-        }).catch(() => {
+        }).catch(()=>{
             reject();
         });
     });
@@ -57,7 +57,7 @@ module.exports.getAllEmployees = function () {
         Employee.findAll().then(function (data) {
             resolve(data);
         }).catch((err) => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
@@ -71,7 +71,7 @@ module.exports.getEmployeesByStatus = function (status) {
         }).then(function (data) {
             resolve(data);
         }).catch(() => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
@@ -85,7 +85,7 @@ module.exports.getEmployeesByDepartment = function (department) {
         }).then(function (data) {
             resolve(data);
         }).catch(() => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
@@ -99,7 +99,7 @@ module.exports.getEmployeesByManager = function (manager) {
         }).then(function (data) {
             resolve(data);
         }).catch(() => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
@@ -113,10 +113,11 @@ module.exports.getEmployeeByNum = function (num) {
         }).then(function (data) {
             resolve(data[0]);
         }).catch(() => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
+
 module.exports.deleteEmployeeByNum = function(empNum){
     return new Promise(function (resolve, reject) {
         Employee.destroy({
@@ -126,7 +127,7 @@ module.exports.deleteEmployeeByNum = function(empNum){
         }).then(function () {
             resolve();
         }).catch((err) => {
-            reject("Unable to delete employee");
+            reject("unable to delete employee");
         });
     });
 }
@@ -140,7 +141,7 @@ module.exports.getDepartmentById = function (id) {
         }).then(function (data) {
             resolve(data[0]);
         }).catch(() => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
@@ -154,7 +155,7 @@ module.exports.getManagers = function () {
         }).then(function (data) {
             resolve(data);
         }).catch(() => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 };
@@ -164,7 +165,7 @@ module.exports.getDepartments = function () {
         Department.findAll().then(function (data) {
             resolve(data);
         }).catch((err) => {
-            reject("The query returned no result");
+            reject("query returned 0 results");
         });
     });
 
@@ -172,11 +173,14 @@ module.exports.getDepartments = function () {
 
 module.exports.addEmployee = function (employeeData) {
     return new Promise(function (resolve, reject) {
+
         employeeData.isManager = (employeeData.isManager) ? true : false;
-        for (var i in employeeData) {
-            if(employeeData[i] == '')
-                employeeData[i] = null;
+
+        for (var prop in employeeData) {
+            if(employeeData[prop] == '')
+                employeeData[prop] = null;
         }
+
         Employee.create(employeeData).then(() => {
             resolve();
         }).catch((e)=>{
@@ -187,16 +191,18 @@ module.exports.addEmployee = function (employeeData) {
 };
 
 module.exports.updateEmployee = function (employeeData) {
+
     return new Promise(function (resolve, reject) {
+
         employeeData.isManager = (employeeData.isManager) ? true : false;
-        for (var i in employeeData) {
-            if (employeeData[i] == '')
-                employeeData[i] = null;
+
+        for (var prop in employeeData) {
+            if (employeeData[prop] == '')
+                employeeData[prop] = null;
         }
+
         Employee.update(employeeData, {
-            where: { 
-                employeeNum: employeeData.employeeNum 
-            } 
+            where: { employeeNum: employeeData.employeeNum } 
         }).then(() => {
             resolve();
         }).catch((e) => {
@@ -207,32 +213,36 @@ module.exports.updateEmployee = function (employeeData) {
 
 module.exports.addDepartment = function (departmentData) {
     return new Promise(function (resolve, reject) {
-        for (var i in departmentData) {
-            if(departmentData[i] == '')
-                departmentData[i] = null;
+
+        for (var prop in departmentData) {
+            if(departmentData[prop] == '')
+                departmentData[prop] = null;
         }
+
         Department.create(departmentData).then(() => {
             resolve();
         }).catch((e)=>{
             reject();
         });
+
     });
 };
 
 module.exports.updateDepartment = function (departmentData) {
     return new Promise(function (resolve, reject) {
-        for (var i in departmentData) {
-            if (departmentData[i] == '')
-                departmentData[i] = null;
+
+        for (var prop in departmentData) {
+            if (departmentData[prop] == '')
+                departmentData[prop] = null;
         }
+
         Department.update(departmentData, {
-            where: { 
-                departmentId: departmentData.departmentId 
-            } 
+            where: { departmentId: departmentData.departmentId } 
         }).then(() => {
             resolve();
         }).catch((e) => {
             reject();
         });
     });
+
 };
