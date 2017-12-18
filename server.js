@@ -1,15 +1,16 @@
 /*********************************************************************************
 *
-*  WEB322 – Assignment 05 
-*  I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this 
+*  WEB322 – Assignment 06 
+*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part of this 
 *  assignment has been copied manually or electronically from any other source (including web sites) or  
-*  distributed to other students. 
+*  distributed to other students.  
 *  
-* Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-12-10
+* Name: Kyuyoung Shim   Student ID: 102562162   Date: 2017-12-17
 * 
 *  Online (Heroku) Link: https://immense-hamlet-93628.herokuapp.com/
 * 
 ********************************************************************************/
+const dataServiceComments = require("./data-service-comments.js");
 var express = require("express");
 var app = express();
 var path = require("path");
@@ -179,8 +180,31 @@ app.use((req, res) => {
     res.status(404).send("Page Not Found");
 });
 
-dataService.initialize().then(function () {
-    app.listen(HTTP_PORT, onHttpStart);
-}).catch(function () {
-    console.log("unable to sync the database");
-});
+//dataService.initialize().then(function () {
+    //app.listen(HTTP_PORT, onHttpStart);
+//}).catch(function () {
+    //console.log("unable to sync the database");
+//});
+dataServiceComments.initialize()
+.then(() => { 
+    dataServiceComments.addComment({ 
+        authorName: "Comment 1 Author", 
+        authorEmail: "comment1@mail.com", 
+        subject: "Comment 1", 
+        commentText: "Comment Text 1" 
+    }).then((id) => { 
+        dataServiceComments.addReply({ 
+            comment_id: id, 
+            authorName: "Reply 1 Author", 
+            authorEmail: "reply1@mail.com", 
+            commentText: "Reply Text 1" 
+        }).then(dataServiceComments.getAllComments)
+        .then((data) => { 
+            console.log("comment: " + data[data.length - 1]); 
+            process.exit(); 
+        }); 
+    }); 
+}).catch((err) => { 
+    console.log("Error: " + err); 
+    process.exit(); 
+}); 
