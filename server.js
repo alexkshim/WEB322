@@ -204,7 +204,7 @@ app.use((req, res) => {
 
 app.listen(HTTP_PORT, function onHttpStart() {
     return new Promise((res, req) => {
-        dataser.initialize().then(()=> {
+        dataser.initialize().then(() => {
         }).catch((err) => {
             console.log(err);
         });
@@ -212,31 +212,30 @@ app.listen(HTTP_PORT, function onHttpStart() {
            }).catch((err) => {
                console.log(err);
             });
-        }).catch(()=> {
+        }).catch(() => {
             console.log("unable to start dataService");
     });
 });
 
-dataServiceComments.initialize()
-    .then(() => {
-        dataServiceComments.addComment({
-            authorName: "Comment 1 Author",
-            authorEmail: "comment1@mail.com",
-            subject: "Comment 1",
-            commentText: "Comment Text 1"
-        }).then((id) => {
-            dataServiceComments.addReply({
-                comment_id: id,
-                authorName: "Reply 1 Author",
-                authorEmail: "reply1@mail.com",
-                commentText: "Reply Text 1"
-            }).then(dataServiceComments.getAllComments)
-                .then((data) => {
-                    console.log("comment: " + data[data.length - 1]);
-                    process.exit();
-                });
-        });
-    }).catch((err) => {
-        console.log("Error: " + err);
-        process.exit();
+dataServiceComments.initialize().then(() => {
+    dataServiceComments.addComment({
+        authorName: "Comment 1 Author",
+        authorEmail: "comment1@mail.com",
+        subject: "Comment 1",
+        commentText: "Comment Text 1"
+    }).then((id) => {
+        dataServiceComments.addReply({
+            comment_id: id,
+            authorName: "Reply 1 Author",
+            authorEmail: "reply1@mail.com",
+            commentText: "Reply Text 1"
+        }).then(dataServiceComments.getAllComments)
+            .then((data) => {
+                console.log("comment: " + data[data.length - 1]);
+                process.exit();
+            });
     });
+}).catch((err) => {
+    console.log("Error: " + err);
+    process.exit();
+});
