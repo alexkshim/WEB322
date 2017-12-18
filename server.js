@@ -176,35 +176,30 @@ app.get("/department/:departmentId", (req, res) => {
     });
 });
 
+app.post("/about/addComment", (req, res) => {
+    dataServiceComments.addComment(req.body).then((data) => {
+        res.redirect("/about");
+    }).catch(() => {
+        res.reject("error");
+        res.redirect("/about");
+    });
+});
+
+app.post("/about/addReply", (req, res) => {
+    dataServiceComments.addReply(req.body).then((data) => {
+        res.redirect("/about");
+    }).catch((err) => {
+        reject("error");
+        redirect("/about");
+    });
+});
+
 app.use((req, res) => {
     res.status(404).send("Page Not Found");
 });
 
-//dataService.initialize().then(function () {
-    //app.listen(HTTP_PORT, onHttpStart);
-//}).catch(function () {
-    //console.log("unable to sync the database");
-//});
-dataServiceComments.initialize()
-.then(() => { 
-    dataServiceComments.addComment({ 
-        authorName: "Comment 1 Author", 
-        authorEmail: "comment1@mail.com", 
-        subject: "Comment 1", 
-        commentText: "Comment Text 1" 
-    }).then((id) => { 
-        dataServiceComments.addReply({ 
-            comment_id: id, 
-            authorName: "Reply 1 Author", 
-            authorEmail: "reply1@mail.com", 
-            commentText: "Reply Text 1" 
-        }).then(dataServiceComments.getAllComments)
-        .then((data) => { 
-            console.log("comment: " + data[data.length - 1]); 
-            process.exit(); 
-        }); 
-    }); 
-}).catch((err) => { 
-    console.log("Error: " + err); 
-    process.exit(); 
-}); 
+dataService.initialize().then(() => {     
+    app.listen(HTTP_PORT, onHttpStart);   
+}).catch(() => {     
+    console.log("unable to start dataService");   
+});

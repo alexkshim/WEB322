@@ -287,3 +287,7 @@ html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
 }
+
+.well .well{ 
+  background-color: white; 
+}
