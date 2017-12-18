@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 mongoose.Promise = global.Promise;
 
-var contentSchema = new Schema({
+var commentSchema = new Schema({
     "authorName": String,
     "authorEmail": String,
     "subject": String,
@@ -19,9 +19,9 @@ var contentSchema = new Schema({
      }]
 });
 
-let Comment = mongoose.model("web322_a6", contentSchema);
+let Comment = mongoose.model("web322_a6", commentSchema);
 
-var dbLink = "mongodb://<dbuser>:<dbpassword>@ds139899.mlab.com:39899/web322_a6";
+var dbLink = "mongodb://kshim3:ksksks@ds139899.mlab.com:39899/web322_a6";
 
 module.exports.initialize = function () {     
     return new Promise(function (resolve, reject) {         
